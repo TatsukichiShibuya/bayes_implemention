@@ -10,18 +10,21 @@ class Beta:
     def __init__(self, hparam):
         self.a = hparam[0]
         self.b = hparam[1]
+        self.mu = 0.1  # 生成されるデータ値の真の平均
 
     def update(self, num=1):
         for i in range(num):
-            x = random.randint(0, 1)
-            self.a += x
-            self.b += (1-x)
+            x = random.random()
+            if x < self.mu:
+                self.a += 1
+            else:
+                self.b += 1
         return self
 
     def show(self):
         x = np.linspace(0, 1, num=100)
         plt.plot(x, beta.pdf(x, self.a, self.b),
-                 label='a = {}, b= {}'.format(self.a, self.b))
+                 label='a={},b={},n={}'.format(self.a, self.b, self.a+self.b))
         plt.legend()
         plt.show()
 
@@ -68,7 +71,7 @@ if(__name__ == '__main__'):
     )
     parser.add_argument(
         '-p', '--hyperparam', nargs='+', type=int,
-        help="betaなら a b で指定"
+        help="例 beta:-m beta -t 100 -s 1 -p 1 1"
     )
     FLAGS = vars(parser.parse_args())
     main(**FLAGS)
