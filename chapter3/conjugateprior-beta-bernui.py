@@ -1,31 +1,42 @@
 import copy
 import argparse
 
-class beta():
+class Beta:
     def __init__(self):
         self.model = 1
-    def update(self):
+        self.a = 1
+    def update(self, num=1):
+        pass
+    def show(self):
         pass
 
-class ConjugatePrior:
+class Distribution:
     def __init__(self, name, hparam):
-        self.distributionType = name
+        self.distribution = name
         self.hparam = hparam
-        self.model = beta()
+        if(self.distribution == "beta"):
+            self.model = Beta()
+        else:
+            pass
     def updata(self, num=1):  # ランダムデータnum個で更新
+        self.model.update(num)
         return self
-
+    def show(self):
+        self.model.show()
+        
 def main(**kwargs):
     num = kwargs['updatetimes']
     size = kwargs['updatesize']
-    cprior = ConjugatePrior(name=kwargs['model'], hparam=kwargs['hyperparam'])
+    cprior = Distribution(name=kwargs['model'], hparam=kwargs['hyperparam'])
     for i in range(num):
         posterior = copy.deepcopy(cprior.updata(num=size))  # 更新
         del cprior
+        print(posterior.model.a)
         if i <= 10 or i%(num//10) == 0:
-            # 事後分布の表示
-            print(i)
-    # 事後分布の表示
+            posterior.show()
+            print()
+        cprior = posterior
+    posterior.show()
     del posterior
 
 if(__name__ == "__main__"):
