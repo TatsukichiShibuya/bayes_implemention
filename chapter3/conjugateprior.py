@@ -10,7 +10,7 @@ class Beta:
     def __init__(self, hparam):
         self.a = hparam[0]
         self.b = hparam[1]
-        self.mu = 0.1  # 生成されるデータ値の真の平均
+        self.mu = 0.4  # 生成されるデータ値の真の平均
 
     def update(self, num=1):
         for i in range(num):
@@ -22,7 +22,7 @@ class Beta:
         return self
 
     def show(self):
-        x = np.linspace(0, 1, num=100)
+        x = np.linspace(0, 1, num=1000)
         plt.plot(x, beta.pdf(x, self.a, self.b),
                  label='a={},b={},n={}'.format(self.a, self.b, self.a+self.b))
         plt.legend()
@@ -32,6 +32,7 @@ class Beta:
 class Distribution:
     def __init__(self, name, hparam):
         self.distribution = name
+
         if(self.distribution == 'beta'):
             self.model = Beta(hparam)
         else:
@@ -45,7 +46,7 @@ class Distribution:
         self.model.show()
 
 
-def main(**kwargs):
+def main(**kwargs):  # 流れの再現を重視しているため、多少非効率な実装になっている
     num = kwargs['updatetimes']
     size = kwargs['updatesize']
     cprior = Distribution(name=kwargs['model'], hparam=kwargs['hyperparam'])
@@ -53,7 +54,7 @@ def main(**kwargs):
         posterior = copy.deepcopy(cprior.updata(num=size))  # 更新
         if num <= 10 or i % (num//10) == 0:  # 分布の表示
             posterior.show()
-        cprior = posterior
+        cprior = posterior  # 事後分布を事前分布に当てはめる
     posterior.show()
     del posterior
 
