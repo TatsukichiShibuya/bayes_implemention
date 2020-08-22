@@ -2,7 +2,7 @@
 "ベイズ推論による機械学習", "ベイズ深層学習", "変分ベイズ学習"の実装
 
 ## プログラム解説
-### 2-chapter4/compare_sampling.py
+### BayesianDeepLearning/chapter4/compare_sampling.py
 棄却サンプリングとメトロポリスヘイスティングス法とハミルトニアンモンテカルロ法を比較  
 * 目標  
 確率密度pからサンプリングしたい(p=N(3,2))  
